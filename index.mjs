@@ -1,32 +1,23 @@
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 
-dotenv.config();
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true
-});
+  apiKey: process.env.OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true
+})
 
+const response = await openai.chat.completions.create({
+  model: 'gpt-3.5-turbo',
+  messages: messages
+})
 const messages = [
-    {
-        role: 'system',
-        content: 'You are a helpful general knowledge expert.'
-    },
-    {
-        role: 'user',
-        content: 'Who invented the television?'
-    }
-];
-
-(async () => {
-    try {
-        const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
-            messages: messages
-        });
-        console.log(response.choices[0].message.content);
-    } catch (error) {
-        console.error("Error creating completion:", error);
-    }
-})();
+  {
+    role: 'system',
+    content: 'You are a helpful assistant that explains concepts understanable to high school students. Your answers are always fewer than 500 words.'
+  },
+  {
+    role: 'user',
+    content: 'What is quantam computing?'
+  }
+]
